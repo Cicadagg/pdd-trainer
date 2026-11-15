@@ -61,6 +61,7 @@
   function newRun() {
     S.order = shuffle(TOTAL);
     S.pos = 0;
+    $('ghosts').innerHTML = '';
     S.runs += 1;
     save();
     renderQuestion();
@@ -92,6 +93,32 @@
     preloadNext();
   }
 
+  // верный ответ: текущая карточка уезжает влево в стопку, новая въезжает справа
+  function advance() {
+    clearTimeout(autoTimer);
+    if (S.pos >= TOTAL) return win();
+    const card = $('card');
+    const ghost = document.createElement('div');
+    ghost.className = 'ghost fresh';
+    const clone = card.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.querySelectorAll('[id]').forEach((n) => n.removeAttribute('id'));
+    clone.classList.remove('shake', 'enter');
+    clone.querySelector('.ok-bar')?.remove();
+    ghost.appendChild(clone);
+    const tag = document.createElement('div');
+    tag.className = 'ghost-tag'; tag.textContent = '✓ ' + pad(S.pos);
+    ghost.appendChild(tag);
+    const box = $('ghosts');
+    box.prepend(ghost);
+    while (box.children.length > 4) box.lastElementChild.remove();
+    card.classList.add('enter');
+    renderQuestion();
+    void card.offsetWidth; void ghost.offsetWidth; // зафиксировать стартовое состояние, затем запустить переходы
+    ghost.classList.remove('fresh');
+    card.classList.remove('enter');
+  }
+
   function preloadNext() {
     const n = S.order[S.pos + 1];
     if (n != null && Q[n].img) { const im = new Image(); im.src = Q[n].img; }
@@ -111,7 +138,7 @@
       if (S.pos > S.best) S.best = S.pos;
       save();
       updateHud();
-      if (S.auto) autoTimer = setTimeout(renderQuestion, 550);
+      if (S.auto) autoTimer = setTimeout(advance, 500);
       else { $('okBar').hidden = false; $('btnNext').focus(); }
     } else {
       btns[i].classList.add('is-bad');
@@ -165,7 +192,7 @@
   $('btnRestart').onclick = newRun;
   $('btnAgain').onclick = newRun;
   $('btnHome').onclick = renderStart;
-  $('btnNext').onclick = renderQuestion;
+  $('btnNext').onclick = advance;
   $('answers').addEventListener('click', (e) => {
     const b = e.target.closest('.ans');
     if (b) answer(+b.dataset.i);
@@ -178,7 +205,7 @@
     const vis = (id) => !$(id).hidden;
     if (vis('scrQuiz')) {
       if (/^[1-5]$/.test(e.key)) { e.preventDefault(); answer(+e.key - 1); }
-      else if (e.key === 'Enter' && !$('okBar').hidden) { e.preventDefault(); renderQuestion(); }
+      else if (e.key === 'Enter' && !$('okBar').hidden) { e.preventDefault(); advance(); }
     } else if (vis('scrFail') && e.key === 'Enter' && document.activeElement?.id !== 'btnHome') {
       e.preventDefault(); newRun();
     }
