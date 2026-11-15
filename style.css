@@ -195,20 +195,20 @@ main { max-width: 920px; margin: 0 auto; padding: 40px 20px 60px; }
 
 /* стопка пройденных вопросов слева */
 .stage { position: relative; }
-.stage > .card { position: relative; z-index: 5; transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s; }
-.stage > .card.enter { transform: translateX(80px); opacity: 0; transition: none; }
+.stage > .card { position: relative; z-index: 5; transform-origin: left top; transition: transform .55s cubic-bezier(.2,.8,.2,1), opacity .55s; }
+.stage > .card.enter { transform: translateX(calc(100% + 36px)) scale(.7); opacity: 0; transition: none; }
 .ghosts { position: absolute; inset: 0; z-index: 1; pointer-events: none; clip-path: inset(0 -100vw 0 -100vw); }
 .ghost {
   position: absolute; top: 0; left: 0; width: 100%;
-  transform-origin: left center;
+  transform-origin: right top;
   transition: transform .55s cubic-bezier(.2,.8,.2,1), opacity .55s, filter .55s;
   filter: grayscale(.5) brightness(.8);
 }
 .ghost .card { margin: 0; }
-.ghost:nth-child(1) { transform: translateX(-34%) scale(.86); opacity: .5; z-index: 4; }
-.ghost:nth-child(2) { transform: translateX(-56%) scale(.74); opacity: .3; z-index: 3; }
-.ghost:nth-child(3) { transform: translateX(-74%) scale(.64); opacity: .15; z-index: 2; }
-.ghost:nth-child(n+4) { transform: translateX(-90%) scale(.56); opacity: 0; }
+.ghost:nth-child(1) { transform: translateX(calc(-100% - 36px)) scale(.7); opacity: .5; z-index: 4; }
+.ghost:nth-child(2) { transform: translateX(calc(-170% - 72px)) scale(.7); opacity: .25; z-index: 3; }
+.ghost:nth-child(3) { transform: translateX(calc(-240% - 108px)) scale(.7); opacity: .1; z-index: 2; }
+.ghost:nth-child(n+4) { transform: translateX(calc(-310% - 144px)) scale(.7); opacity: 0; }
 .ghost.fresh { transform: none !important; opacity: 1 !important; filter: none; }
 .ghost-tag {
   position: absolute; top: 14px; right: 16px; z-index: 2;
