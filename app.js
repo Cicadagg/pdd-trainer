@@ -143,6 +143,10 @@
     const w = ex?.w?.[picked];
     $('exWrongWrap').hidden = !w;
     $('exWrong').textContent = w || '';
+    $('exRuleWrap').hidden = !ex?.r;
+    $('exRule').textContent = ex?.r || '';
+    $('exTwistWrap').hidden = !ex?.t;
+    $('exTwist').textContent = ex?.t || '';
     $('exTip').textContent = q.tip || '—';
     show('scrFail');
     $('btnRestart').focus({ preventScroll: true });

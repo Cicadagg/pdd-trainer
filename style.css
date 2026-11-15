@@ -182,6 +182,10 @@ main { max-width: 920px; margin: 0 auto; padding: 40px 20px 60px; }
 .ex-k { font-size: 11px; color: var(--accent); font-weight: 700; }
 .ex-wrong { border-left-color: var(--red); }
 .ex-wrong .ex-k { color: var(--red); }
+.ex-rule { border-left-color: #5aa9e6; }
+.ex-rule .ex-k { color: #5aa9e6; }
+.ex-tip { border-left-color: #b98cf0; }
+.ex-tip .ex-k { color: #b98cf0; }
 .ex-official { border-left-color: var(--line2); color: #b5b1a8; font-size: 14px; }
 .ex-official summary { cursor: pointer; font-size: 11px; color: var(--dim); font-weight: 700; }
 .ex-official summary:hover { color: var(--text); }

@@ -35,7 +35,8 @@ fs.writeFileSync(path.join(root, 'data/questions.json'), JSON.stringify(out));
 const exDir = path.join(root, 'data/explain');
 const ex = {};
 if (fs.existsSync(exDir)) for (const f of fs.readdirSync(exDir).filter(f => f.endsWith('.json')).sort())
-  Object.assign(ex, JSON.parse(fs.readFileSync(path.join(exDir, f), 'utf8')));
+  for (const [k, v] of Object.entries(JSON.parse(fs.readFileSync(path.join(exDir, f), 'utf8'))))
+    ex[k] = { ...ex[k], ...v }; // t*.json даёт s/w, r*.json добавляет r (правило) и t (а если бы)
 fs.writeFileSync(path.join(root, 'data/questions.js'), 'window.PDD=' + JSON.stringify(out) + ';\nwindow.PDD_EX=' + JSON.stringify(ex) + ';\n');
 console.log('explanations', Object.keys(ex).length);
 console.log('questions', out.length, 'with img', out.filter(q => q.img).length, 'bad c', out.filter(q => q.c < 0).length);
