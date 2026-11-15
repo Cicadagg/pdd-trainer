@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ПДД: Без права на ошибку</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-noise"></div>
+
+<header class="top">
+  <div class="brand">
+    <span class="brand-mark">!</span>
+    <div>
+      <div class="brand-title">ПДД // ПРОТОКОЛ</div>
+      <div class="brand-sub mono">ABM · 40 БИЛЕТОВ · 800 ВОПРОСОВ</div>
+    </div>
+  </div>
+  <div class="hud mono" id="hud" hidden>
+    <div class="hud-cell"><span class="hud-k">ПРОЙДЕНО</span><span class="hud-v" id="hudDone">0</span><span class="hud-of">/ 800</span></div>
+    <div class="hud-cell"><span class="hud-k">РЕКОРД</span><span class="hud-v" id="hudBest">0</span></div>
+    <div class="hud-cell"><span class="hud-k">ПОПЫТКА</span><span class="hud-v" id="hudRun">1</span></div>
+  </div>
+</header>
+<div class="progress" id="progress" hidden><div class="progress-bar" id="progressBar"></div></div>
+
+<main>
+  <!-- СТАРТ -->
+  <section class="screen" id="scrStart">
+    <div class="hero">
+      <div class="hero-tag mono">// РЕЖИМ: HARDCORE</div>
+      <h1 class="hero-title">Без права<br><span class="accent">на ошибку</span></h1>
+      <p class="hero-text">Все <b>800</b> экзаменационных вопросов ПДД РФ в случайном порядке. Одна ошибка — разбор, почему ты не прав, и откат в самое начало. Победа только за чистый проход.</p>
+      <div class="rules">
+        <div class="rule"><span class="rule-n mono">01</span><span>Вопросы перемешиваются при каждой попытке</span></div>
+        <div class="rule"><span class="rule-n mono">02</span><span>Ошибся — читаешь разбор простым языком</span></div>
+        <div class="rule"><span class="rule-n mono">03</span><span>Потом всё сначала, с новой раздачей</span></div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn btn-main" id="btnStart">Начать</button>
+        <button class="btn btn-ghost" id="btnContinue" hidden>Продолжить попытку</button>
+      </div>
+      <div class="stats mono" id="startStats"></div>
+      <div class="keys mono">Клавиши: <kbd>1</kbd>–<kbd>5</kbd> ответ · <kbd>Enter</kbd> дальше</div>
+    </div>
+  </section>
+
+  <!-- ВОПРОС -->
+  <section class="screen" id="scrQuiz" hidden>
+    <article class="card" id="card">
+      <div class="card-head mono">
+        <span class="chip" id="qTicket">БИЛЕТ 1 · ВОПРОС 1</span>
+        <span class="chip chip-dim" id="qTopic"></span>
+        <span class="card-idx" id="qIdx">#001</span>
+      </div>
+      <div class="card-img" id="qImgWrap"><img id="qImg" alt="Ситуация к вопросу"></div>
+      <h2 class="card-q" id="qText"></h2>
+      <div class="answers" id="answers"></div>
+      <div class="ok-bar" id="okBar" hidden>
+        <span class="mono">ВЕРНО</span>
+        <button class="btn btn-main btn-sm" id="btnNext">Дальше <kbd>Enter</kbd></button>
+      </div>
+    </article>
+    <label class="toggle mono"><input type="checkbox" id="autoNext" checked> автопереход после верного ответа</label>
+  </section>
+
+  <!-- ПРОВАЛ -->
+  <section class="screen" id="scrFail" hidden>
+    <div class="fail-head">
+      <div class="fail-tag mono">// СБОЙ ПРОТОКОЛА</div>
+      <h1 class="fail-title">Ошибка</h1>
+      <div class="fail-meta mono" id="failMeta"></div>
+    </div>
+    <article class="card card-fail">
+      <div class="card-head mono"><span class="chip" id="fTicket"></span></div>
+      <div class="card-img" id="fImgWrap"><img id="fImg" alt="Ситуация к вопросу"></div>
+      <h2 class="card-q" id="fText"></h2>
+      <div class="answers answers-static" id="fAnswers"></div>
+      <div class="explain">
+        <div class="ex-block ex-why">
+          <div class="ex-k mono">ПОЧЕМУ ТАК</div>
+          <p id="exSimple"></p>
+        </div>
+        <div class="ex-block ex-wrong" id="exWrongWrap">
+          <div class="ex-k mono">ЧТО НЕ ТАК С ТВОИМ ОТВЕТОМ</div>
+          <p id="exWrong"></p>
+        </div>
+        <details class="ex-block ex-official">
+          <summary class="mono">ОФИЦИАЛЬНЫЙ КОММЕНТАРИЙ</summary>
+          <p id="exTip"></p>
+        </details>
+      </div>
+    </article>
+    <div class="fail-actions">
+      <button class="btn btn-main" id="btnRestart">Заново с нуля <kbd>Enter</kbd></button>
+      <button class="btn btn-ghost" id="btnHome">В меню</button>
+    </div>
+  </section>
+
+  <!-- ПОБЕДА -->
+  <section class="screen" id="scrWin" hidden>
+    <div class="hero">
+      <div class="hero-tag mono">// ПРОТОКОЛ ЗАВЕРШЁН</div>
+      <h1 class="hero-title">800 из 800.<br><span class="accent">Ни одной ошибки.</span></h1>
+      <p class="hero-text" id="winText"></p>
+      <div class="hero-actions"><button class="btn btn-main" id="btnAgain">Ещё раз</button></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot mono">Вопросы: официальные билеты ГИБДД (кат. A, B, M), база <a href="https://github.com/etspring/pdd_russia" target="_blank" rel="noopener">etspring/pdd_russia</a>. Пояснения упрощены и не заменяют текст ПДД.</footer>
+
+<script src="data/questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
